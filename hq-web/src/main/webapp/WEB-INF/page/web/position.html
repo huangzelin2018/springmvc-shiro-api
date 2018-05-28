@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>诚聘英才-岗位信息表</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            #if($shiro.hasPermission("position:save"))
+            <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            #end
+            #if($shiro.hasPermission("position:update"))
+            <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            #end
+            #if($shiro.hasPermission("position:delete"))
+            <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+            #end
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">职位标题</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.jobTitle" placeholder="职位标题"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">职位要求年限</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.jobYear" placeholder="职位要求年限"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">学历</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.education" placeholder="学历"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">职位分类名称</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" style="cursor:pointer;" v-model="positionType.jobTypeName" @click="menuTree" readonly="readonly" placeholder="职位分类"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">职位招聘人数</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.jobCount" placeholder="职位招聘人数"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">岗位职责</div>
+                <div class="col-sm-10">
+                    <textarea cols="5" rows="5"  class="form-control" v-model="position.jobDescription" placeholder="岗位职责"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">任职资格</div>
+                <div class="col-sm-10">
+                    <textarea cols="5" rows="5"  class="form-control" v-model="position.jobCondition" placeholder="任职资格" ></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">联系方式</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.contact" placeholder="联系方式"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">工作地址</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.address" placeholder="工作地址"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">排序</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="position.orderNum" placeholder="排序"/>（由小到大排序）
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">是否上下架</div>
+                <label class="radio-inline">
+                    <input type="radio" name="type" value="1" v-model="position.isUse"/> 上架
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="type" value="0" v-model="position.isUse"/> 下架
+                </label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+    <ul id="menuTree" class="ztree"></ul>
+</div>
+<script src="${rc.contextPath}/js/web/position.js?_${date.systemTime}"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hq.dao.PositionTypeDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hq.entity.PositionTypeEntity" id="positionTypeMap">
+        <result property="id" column="id"/>
+        <result property="jobTypeName" column="job_type_name"/>
+        <result property="jobTypePic" column="job_type_pic"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="isUse" column="is_use"/>
+    </resultMap>
+
+    <!-- 公用的select语句 -->
+    <sql id="select_tb_position_type">
+        c.id, c.job_type_name, c.job_type_pic, c.order_num, c.create_time, c.update_time, c.create_user_id,
+        c.update_user_id, c.is_delete, c.is_use
+        <include refid="from_tb_position_type"/>
+    </sql>
+
+    <sql id="from_tb_position_type">
+        from tb_position_type c
+    </sql>
+
+    <!-- 公用的where语句 -->
+    <sql id="where_tb_position_type">
+        <where>
+            1=1
+        </where>
+    </sql>
+
+    <select id="queryObject" resultType="com.hq.entity.PositionTypeEntity">
+        select
+        <include refid="select_tb_position_type"/>
+        <include refid="where_tb_position_type"/>
+        and id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.hq.entity.PositionTypeEntity">
+        select
+        <include refid="select_tb_position_type"/>
+        <include refid="where_tb_position_type"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(c.id)
+        <include refid="from_tb_position_type"/>
+        <include refid="where_tb_position_type"/>
+    </select>
+
+    <insert id="save" parameterType="com.hq.entity.PositionTypeEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_position_type
+        (
+        `job_type_name`,
+        `job_type_pic`,
+        `order_num`,
+        `create_time`,
+        `update_time`,
+        `create_user_id`,
+        `update_user_id`,
+        `is_delete`,
+        `is_use`
+        )
+        values
+        (
+        #{jobTypeName},
+        #{jobTypePic},
+        #{orderNum},
+        #{createTime},
+        #{updateTime},
+        #{createUserId},
+        #{updateUserId},
+        #{isDelete},
+        #{isUse}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.hq.entity.PositionTypeEntity">
+        update tb_position_type
+        <set>
+            <if test="jobTypeName != null">`job_type_name` = #{jobTypeName},</if>
+            <if test="jobTypePic != null">`job_type_pic` = #{jobTypePic},</if>
+            <if test="orderNum != null">`order_num` = #{orderNum},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId},</if>
+            <if test="updateUserId != null">`update_user_id` = #{updateUserId},</if>
+            <if test="isDelete != null">`is_delete` = #{isDelete},</if>
+            <if test="isUse != null">`is_use` = #{isUse}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from tb_position_type where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from tb_position_type where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

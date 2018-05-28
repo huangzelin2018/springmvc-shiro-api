@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hq-api/hq-api.iml" filepath="$PROJECT_DIR$/hq-api/hq-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hq-common/hq-common.iml" filepath="$PROJECT_DIR$/hq-common/hq-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hq-gen/hq-gen.iml" filepath="$PROJECT_DIR$/hq-gen/hq-gen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hq-shiro/hq-shiro.iml" filepath="$PROJECT_DIR$/hq-shiro/hq-shiro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hq-web/hq-web.iml" filepath="$PROJECT_DIR$/hq-web/hq-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jtgw.iml" filepath="$PROJECT_DIR$/jtgw.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hq.dao.SysDictDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hq.entity.SysDictEntity" id="sysDictMap">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="key" column="key"/>
+        <result property="value" column="value"/>
+        <result property="notes" column="notes"/>
+        <result property="order" column="order"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.hq.entity.SysDictEntity">
+		select * from sys_dict where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hq.entity.SysDictEntity">
+		select * from sys_dict
+		<where>
+			<if test="parentId != null">
+				and `parent_id` = #{parentId} 
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryTree" resultType="com.hq.entity.SysDictEntity">
+		select t.* from sys_dict t where t.parent_id in (0,1) order by id asc
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_dict 
+	</select>
+	 
+	<insert id="save" parameterType="com.hq.entity.SysDictEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dict
+		(
+			`parent_id`, 
+			`key`, 
+			`value`, 
+			`notes`, 
+			`order`
+		)
+		values
+		(
+			#{parentId}, 
+			#{key}, 
+			#{value}, 
+			#{notes}, 
+			#{order}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hq.entity.SysDictEntity">
+		update sys_dict 
+		<set>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="key != null">`key` = #{key}, </if>
+			<if test="value != null">`value` = #{value}, </if>
+			<if test="notes != null">`notes` = #{notes}, </if>
+			<if test="order != null">`order` = #{order}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_dict where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_dict where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

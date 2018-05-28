@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hq.dao.SysDictionaryKindDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hq.entity.SysDictionaryKindEntity" id="sysDictionaryKindMap">
+        <result property="id" column="id"/>
+        <result property="kind" column="kind"/>
+        <result property="comments" column="comments"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.hq.entity.SysDictionaryKindEntity">
+		select * from sys_dictionary_kind where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.hq.entity.SysDictionaryKindEntity">
+		select * from sys_dictionary_kind
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_dictionary_kind 
+	</select>
+	 
+	<insert id="save" parameterType="com.hq.entity.SysDictionaryKindEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_dictionary_kind
+		(
+			`kind`, 
+			`comments`
+		)
+		values
+		(
+			#{kind}, 
+			#{comments}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hq.entity.SysDictionaryKindEntity">
+		update sys_dictionary_kind 
+		<set>
+			<if test="kind != null">`kind` = #{kind}, </if>
+			<if test="comments != null">`comments` = #{comments}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_dictionary_kind where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_dictionary_kind where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

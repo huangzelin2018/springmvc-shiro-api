@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+#parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			#if($shiro.hasPermission("qrtzvideo:save"))
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			#end
+			#if($shiro.hasPermission("qrtzvideo:update"))
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			#end
+			#if($shiro.hasPermission("qrtzvideo:delete"))
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			#end
+			#if($shiro.hasPermission("qrtzvideo:shelve"))
+			<a class="btn btn-primary" @click="shelve"><i class=""></i>&nbsp;上架/下架</a>
+			#end
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+											<div class="form-group">
+			   	<div class="col-sm-2 control-label">视频的url</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.videoUrl" placeholder="视频的url"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">视频的标题</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.videoTitle" placeholder="视频的标题"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">创建用户 </div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.username" placeholder="创建用户 "/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">修改用户</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.updateUserId" placeholder="修改用户"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">是否删除标记(0 正常，1 删除)</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.idDelete" placeholder="是否删除标记(0 正常，1 删除)"/>
+			    </div>
+			</div>
+									<div class="form-group">
+			   	<div class="col-sm-2 control-label">是否下架标记(1 正常，0 下架 )</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="qrtzVideo.idUser" placeholder="是否下架标记(1 正常，0 下架 )"/>
+			    </div>
+			</div>
+							<div class="form-group">
+				<div class="col-sm-2 control-label"></div> 
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="${rc.contextPath}/js/sys/qrtzvideo.js?_${date.systemTime}"></script>
+</body>
+</html>

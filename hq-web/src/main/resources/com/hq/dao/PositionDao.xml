@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hq.dao.PositionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.hq.entity.PositionEntity" id="positionMap">
+        <result property="id" column="id"/>
+        <result property="jobTitle" column="job_title"/>
+        <result property="jobYear" column="job_year"/>
+        <result property="education" column="education"/>
+        <result property="jobTypeId" column="job_type_id"/>
+        <result property="jobCount" column="job_count"/>
+        <result property="jobDescription" column="job_description"/>
+        <result property="jobCondition" column="job_condition"/>
+        <result property="contact" column="contact"/>
+        <result property="address" column="address"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="isUse" column="is_use"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="positionMap">
+		select * from tb_position
+		LEFT JOIN tb_position_type
+        on tb_position_type.job_type_id = tb_position.job_type_id
+		where id = #{value}
+	</select>
+
+	<select id="queryObjectByIsUse" resultType="com.hq.entity.PositionEntity">
+		select * from tb_position where id = #{value} and is_use = 1
+	</select>
+
+	<select id="queryList" resultMap="positionMap">
+		select * from tb_position
+        LEFT JOIN tb_position_type
+        on tb_position_type.job_type_id = tb_position.job_type_id
+        where 1=1
+		<if test="isUse != null">
+			and tb_position.is_use = 1
+		</if>
+        <if test="jobTypeId != null">
+            and tb_position.job_type_id=#{jobTypeId}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by tb_position.${sidx} ${order}
+            </when>
+			<otherwise>
+                order by tb_position.id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListType" parameterType="string" resultType="com.hq.entity.PositionEntity">
+        select * from tb_position  where job_type_id=#{job_type_id} order by update_time desc
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from tb_position where 1=1
+        <if test="isUse != null">
+            and tb_position.is_use = 1
+        </if>
+        <if test="jobTypeId != null">
+            and tb_position.job_type_id=#{jobTypeId}
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.hq.entity.PositionEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into tb_position
+		(
+			`job_title`, 
+			`job_year`, 
+			`education`, 
+			`job_type_id`,
+			`job_count`, 
+			`job_description`, 
+			`job_condition`, 
+			`contact`, 
+			`address`, 
+			`order_num`, 
+			`create_time`, 
+			`update_time`, 
+			`create_user_id`, 
+			`update_user_id`, 
+			`is_delete`, 
+			`is_use`
+		)
+		values
+		(
+			#{jobTitle}, 
+			#{jobYear}, 
+			#{education}, 
+			#{jobTypeId},
+			#{jobCount}, 
+			#{jobDescription}, 
+			#{jobCondition}, 
+			#{contact}, 
+			#{address}, 
+			#{orderNum}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{createUserId}, 
+			#{updateUserId}, 
+			#{isDelete}, 
+			#{isUse}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.hq.entity.PositionEntity">
+		update tb_position 
+		<set>
+			<if test="jobTitle != null">`job_title` = #{jobTitle}, </if>
+			<if test="jobYear != null">`job_year` = #{jobYear}, </if>
+			<if test="education != null">`education` = #{education}, </if>
+			<if test="jobTypeId != null">`job_type_id` = #{jobTypeId}, </if>
+			<if test="jobCount != null">`job_count` = #{jobCount}, </if>
+			<if test="jobDescription != null">`job_description` = #{jobDescription}, </if>
+			<if test="jobCondition != null">`job_condition` = #{jobCondition}, </if>
+			<if test="contact != null">`contact` = #{contact}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="orderNum != null">`order_num` = #{orderNum}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="updateUserId != null">`update_user_id` = #{updateUserId}, </if>
+			<if test="isDelete != null">`is_delete` = #{isDelete}, </if>
+			<if test="isUse != null">`is_use` = #{isUse}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from tb_position where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from tb_position where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="findListApi" resultType="com.hq.entity.PositionEntity">
+		SELECT job_type_id, COUNT(id) as orderNum from tb_position where job_type_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+		 and is_use=1 GROUP BY job_type_id
+	</select>
+
+</mapper>

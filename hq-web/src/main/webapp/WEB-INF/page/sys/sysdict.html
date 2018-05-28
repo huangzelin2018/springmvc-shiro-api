@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+#parse("sys/header.html")
+</head>
+<style>
+.left{
+	border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 0px;
+}
+.area_tree{
+	height: 467px;
+    overflow-y:auto;
+}
+.area_edit{
+	border-top: 1px solid #ddd;
+	height:38px;
+	text-align: right;
+    line-height: 38px;
+}
+.area_edit a{
+	margin-right:8px;
+	cursor: pointer;
+}
+</style>
+<body>
+<div id="rrapp" v-cloak>
+	<div class="row">
+		<div class="col-md-2 left">
+			<div class="area_tree">
+				<ul id="dictTree" class="ztree"></ul>
+			</div>
+			<div class="area_edit">
+			#if($shiro.hasPermission("sysdict:save"))
+			<a class="glyphicon glyphicon-plus" @click="add"></a>
+			#end
+			#if($shiro.hasPermission("sysdict:update"))
+			<a class="glyphicon glyphicon-pencil" @click="update"></a>
+			#end
+			#if($shiro.hasPermission("sysdict:delete"))
+			<a class="glyphicon glyphicon-minus" @click="del"></a>
+			#end
+			</div>
+		</div>
+		
+		<div class="col-md-10">
+			<div v-show="showList">
+				<div class="grid-btn">
+					#if($shiro.hasPermission("sysdict:save"))
+					<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+					#end
+					#if($shiro.hasPermission("sysdict:update"))
+					<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+					#end
+					#if($shiro.hasPermission("sysdict:delete"))
+					<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+					#end
+				</div>
+			    <table id="jqGrid"></table>
+			    <div id="jqGridPager"></div>
+		    </div>
+		    
+		    <div v-show="!showList" class="panel panel-default">
+				<div class="panel-heading">{{title}}</div>
+				<form class="form-horizontal">
+					<div class="form-group">
+					   	<div class="col-sm-2 control-label">父节点ID</div>
+					   	<div class="col-sm-10">
+					      <input type="text" class="form-control" v-model="sysDict.parentId" placeholder="父节点ID"/>
+					    </div>
+					</div>
+					<div class="form-group">
+					   	<div class="col-sm-2 control-label">字典码</div>
+					   	<div class="col-sm-10">
+					      <input type="text" class="form-control" v-model="sysDict.key" placeholder="字典码"/>
+					    </div>
+					</div>
+					<div class="form-group">
+					   	<div class="col-sm-2 control-label">字典值</div>
+					   	<div class="col-sm-10">
+					      <input type="text" class="form-control" v-model="sysDict.value" placeholder="字典值"/>
+					    </div>
+					</div>
+					<div class="form-group">
+					   	<div class="col-sm-2 control-label">备注</div>
+					   	<div class="col-sm-10">
+					      <input type="text" class="form-control" v-model="sysDict.notes" placeholder="备注"/>
+					    </div>
+					</div>
+					<div class="form-group">
+					   	<div class="col-sm-2 control-label">序号</div>
+					   	<div class="col-sm-10">
+					      <input type="text" class="form-control" v-model="sysDict.order" placeholder="序号"/>
+					    </div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-2 control-label"></div> 
+						<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+						&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="${rc.contextPath}/js/sys/sysdict.js?_${date.systemTime}"></script>
+</body>
+</html>
