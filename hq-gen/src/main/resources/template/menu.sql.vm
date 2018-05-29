@@ -14,3 +14,5 @@ INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `or
     SELECT @parentId, '修改', null, '${pathName}:update', '2', null, '6';
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
     SELECT @parentId, '删除', null, '${pathName}:delete', '2', null, '6';
+    INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
+    SELECT @parentId, '上/下架', null, '${pathName}:ishide', '2', null, '6';

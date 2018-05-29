@@ -45,8 +45,8 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public int deleteBatch(Object[] id) {
-        return baseDao.deleteBatch(id);
+    public int deleteBatch(Object[] ids) {
+        return baseDao.deleteBatch(ids);
     }
 
     @Override
@@ -72,5 +72,10 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     @Override
     public int queryTotal() {
         return baseDao.queryTotal();
+    }
+
+    @Override
+    public int isHide(Object[] ids) {
+        return baseDao.isHide(ids);
     }
 }

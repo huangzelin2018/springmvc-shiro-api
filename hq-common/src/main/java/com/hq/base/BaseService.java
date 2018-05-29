@@ -18,7 +18,7 @@ public interface BaseService<T> {
 
     int delete(Map<String, Object> map);
 
-    int deleteBatch(Object[] id);
+    int deleteBatch(Object[] ids);
 
     T queryObject(Object id);
 
@@ -30,5 +30,6 @@ public interface BaseService<T> {
 
     int queryTotal();
 
+    int isHide(Object[] ids);
 
 }

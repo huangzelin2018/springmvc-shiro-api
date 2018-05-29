@@ -132,6 +132,26 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam',{
                 page:page
             }).trigger("reloadGrid");
-		}
+		},
+        ishide: function (event){
+            var ${pk.attrname}s = getSelectedRows();
+            if(${pk.attrname}s == null){
+                return ;
+            }
+            $.ajax({
+                type: "POST",
+                url: cxt+"/${moduleName}/${pathName}/ishide",
+                data: JSON.stringify(${pk.attrname}s),
+                success: function(r){
+                    if(r.code == 0){
+                        alert('操作成功', function(index){
+                            $("#jqGrid").trigger("reloadGrid");
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                }
+            });
+        }
 	}
 });

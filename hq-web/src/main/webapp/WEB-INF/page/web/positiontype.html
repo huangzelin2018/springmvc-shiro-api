@@ -14,6 +14,9 @@
             #if($shiro.hasPermission("positiontype:update"))
             <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
             #end
+            #if($shiro.hasPermission("positiontype:ishide"))
+            <a class="btn btn-primary" @click="ishide"><i class="fa fa-wrench"></i>&nbsp;上架/下架</a>
+            #end
             #if($shiro.hasPermission("positiontype:delete"))
             <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
             #end

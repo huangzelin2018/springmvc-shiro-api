@@ -26,7 +26,7 @@ public interface BaseDao<T> {
 	
 	int delete(Map<String, Object> map);
 	
-	int deleteBatch(Object[] id);
+	int deleteBatch(Object[] ids);
 
 	T queryObject(Object id);
 	
@@ -37,4 +37,6 @@ public interface BaseDao<T> {
 	int queryTotal(Map<String, Object> map);
 
 	int queryTotal();
+
+	int isHide(Object[] ids);
 }

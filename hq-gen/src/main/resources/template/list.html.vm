@@ -6,6 +6,7 @@
     #set($save='#if($shiro.hasPermission("'+${pathName}+':save"))')
     #set($update='#if($shiro.hasPermission("'+${pathName}+':update"))')
     #set($delete='#if($shiro.hasPermission("'+${pathName}+':delete"))')
+    #set($ishide='#if($shiro.hasPermission("'+${pathName}+':ishide"))')
     #set($end='#end')
     $header
 </head>
@@ -18,6 +19,9 @@
             $end
             $update
             <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            $end
+            $ishide
+            <a class="btn btn-primary" @click="ishide"><i class="fa fa-wrench"></i>&nbsp;上架/下架</a>
             $end
             $delete
             <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>

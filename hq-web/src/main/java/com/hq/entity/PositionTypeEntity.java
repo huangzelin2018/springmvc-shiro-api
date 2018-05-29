@@ -1,6 +1,9 @@
 package com.hq.entity;
 
 import com.hq.base.BaseEntity;
+import com.hq.validator.group.AddGroup;
+import com.hq.validator.group.UpdateGroup;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +21,7 @@ public class PositionTypeEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	//职位分类名称
+	@NotBlank(message="职位分类名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private String jobTypeName;
 	//类别小图
 	private String jobTypePic;

@@ -4,10 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [
             { label: 'id', name: 'id', index: 'id', width: 50, key: true },
-            { label: '职位分类名称', name: 'jobTypeName', index: 'job_type_name', width: 80 },
-            { label: '类别小图', name: 'jobTypePic', index: 'job_type_pic', width: 80 },
-            { label: '排序', name: 'orderNum', index: 'order_num', width: 80 },
-            { label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 														            {label: '是否上下架', name: 'isUse', index: 'is_use', width: 80, formatter: function(value, options, row){
+            { label: '职位分类名称', name: 'jobTypeName', index: 'job_type_name', width: 80 }, 									{ label: '类别小图', name: 'jobTypePic', index: 'job_type_pic', width: 80 }, 									{ label: '排序', name: 'orderNum', index: 'order_num', width: 80 }, 									{ label: '创建时间', name: 'createTime', index: 'create_time', width: 80 }, 														            {label: '是否上下架', name: 'isUse', index: 'is_use', width: 80, formatter: function(value, options, row){
                     if(value === 1){
                         return '<span class="label label-success">上架</span>';
                     }else if(value === 0){
@@ -119,6 +116,26 @@ var vm = new Vue({
             $("#jqGrid").jqGrid('setGridParam',{
                 page:page
             }).trigger("reloadGrid");
+        },
+        ishide: function (event){
+            var ids = getSelectedRows();
+            if(ids == null){
+                return ;
+            }
+            $.ajax({
+                type: "POST",
+                url: cxt+"/web/positiontype/ishide",
+                data: JSON.stringify(ids),
+                success: function(r){
+                    if(r.code == 0){
+                        alert('操作成功', function(index){
+                            $("#jqGrid").trigger("reloadGrid");
+                        });
+                    }else{
+                        alert(r.msg);
+                    }
+                }
+            });
         }
     }
 });

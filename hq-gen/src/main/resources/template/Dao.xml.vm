@@ -58,6 +58,13 @@
         <include refid="from_${tableName}" />
         <include refid="where_${tableName}" />
 	</select>
+
+    <update id="isHide" parameterType="long">
+        update ${tableName} set `is_use`=ABS(`is_use`-1) where ${pk.columnName} in
+        <foreach item="${pk.attrname}" collection="array" open="(" separator="," close=")">
+            #{${pk.attrname}}
+        </foreach>
+    </update>
 	 
 	<insert id="save" parameterType="${package}.entity.${className}Entity"#if($pk.extra == 'auto_increment') useGeneratedKeys="true" keyProperty="$pk.attrname"#end>
 		insert into ${tableName}

@@ -17,8 +17,8 @@ public class Demo {
 //        System.out.println("输出第一个："+tableNames);
 //        List<String> orders=list.stream().map(User::getOrder).collect(Collectors.toList());
 //        System.out.println(orders);
-        List<Long> ids = list.stream().map(User::getId).collect(Collectors.toList());
-        System.out.println(ids);
+//        List<Long> ids = list.stream().map(User::getId).collect(Collectors.toList());
+//        System.out.println(ids);
     }
 
 }
